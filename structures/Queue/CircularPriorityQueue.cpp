@@ -23,7 +23,7 @@ public:
 };
 
 template <typename T>
-class PriorityQueue {
+class CircularPriorityQueue {
 private:
   int frontIndex;
   int rearIndex;
@@ -32,19 +32,19 @@ private:
   Item<T>* queueData;
 
 public:
-  PriorityQueue() {
+  CircularPriorityQueue() {
     rearIndex = frontIndex = -1;
     numberOfElements = queueCapacity = 0;
     queueData = nullptr;
   }
-  PriorityQueue(int queueCapacity) : frontIndex(-1), rearIndex(-1), queueCapacity(queueCapacity), numberOfElements(0) {
+  CircularPriorityQueue(int queueCapacity) : frontIndex(-1), rearIndex(-1), queueCapacity(queueCapacity), numberOfElements(0) {
     if (queueCapacity < 1) {
       queueData = nullptr;
     } else {
       queueData = new Item<T>[queueCapacity];
     }
   }
-  PriorityQueue(const PriorityQueue& obj) : frontIndex(obj.frontIndex), rearIndex(obj.rearIndex), queueCapacity(obj.queueCapacity), numberOfElements(obj.numberOfElements) {
+  CircularPriorityQueue(const CircularPriorityQueue& obj) : frontIndex(obj.frontIndex), rearIndex(obj.rearIndex), queueCapacity(obj.queueCapacity), numberOfElements(obj.numberOfElements) {
     if (obj.queueCapacity < 1) {
       throw runtime_error("Exception! Queue is full!");
     } else {
@@ -54,7 +54,7 @@ public:
       }
     }
   }
-  ~PriorityQueue() {
+  ~CircularPriorityQueue() {
     delete[] queueData;
     queueData = nullptr;
   }
@@ -177,7 +177,7 @@ int main() {
     cout << "Enter the size of queue (>= 1): ";
     cin >> queueSize;
   } while (queueSize < 1);
-  PriorityQueue<int> queue(queueSize);
+  CircularPriorityQueue<int> queue(queueSize);
 
   while (true) {
     cout << "\n---------------------\nChoose an action:\n"
