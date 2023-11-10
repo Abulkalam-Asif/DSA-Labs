@@ -20,6 +20,10 @@ public:
       next = nullptr;
     }
   }
+  friend ostream &operator<<(ostream &o, const Node<T> *obj) {
+    o << obj->val;
+    return o;
+  }
 };
 
 template <typename T>
@@ -172,6 +176,22 @@ public:
       }
     }
   }
+  // getNode : Returns pointer to last node if n > nodesCount; else, returns pointer to nth node.
+  Node<T> *getNode(int n) { // O(n)
+    if (head) {             // if head is not null
+      Node<T> *temp = head;
+      while (temp->next) {
+        if (n == 0) {
+          return temp;
+        }
+        --n;
+        temp = temp->next;
+      }
+      return temp;
+    } else {
+      throw runtime_error("Exception! List is empty!");
+    }
+  }
 };
 
 int main() {
@@ -183,8 +203,9 @@ int main() {
   cout << "4- Delete at tail" << endl;
   cout << "5- Delete a value" << endl;
   cout << "6- Search" << endl;
-  cout << "7- Test copy constructor" << endl;
-  cout << "8- Print the list" << endl;
+  cout << "7- Get node" << endl;
+  cout << "8- Test copy constructor" << endl;
+  cout << "9- Print the list" << endl;
   cout << "else, Exit\n"
        << endl;
   cout << "Your choice: ";
@@ -237,10 +258,20 @@ int main() {
         cout << "Element not found!" << endl;
       }
     } else if (choice == 7) {
+      int index;
+      cout << "Enter index of the node: ";
+      cin >> index;
+      try {
+        Node<int> *node = myList.getNode(index);
+        cout << "node: " << node << endl;
+      } catch (exception &e) {
+        cout << e.what() << endl;
+      }
+    } else if (choice == 8) {
       SinglyLinearLinkedList<int> myList2(myList);
       cout << "Printing the new list..." << endl;
       myList2.print();
-    } else if (choice == 8) {
+    } else if (choice == 9) {
       cout << "Printing the list..." << endl;
       myList.print();
     } else {
@@ -258,8 +289,9 @@ int main() {
     cout << "4- Delete at tail" << endl;
     cout << "5- Delete a value" << endl;
     cout << "6- Search" << endl;
-    cout << "7- Test copy constructor" << endl;
-    cout << "8- Print the list" << endl;
+    cout << "7- Get node" << endl;
+    cout << "8- Test copy constructor" << endl;
+    cout << "9- Print the list" << endl;
     cout << "else, Exit\n"
          << endl;
     cout << "Your choice: ";
