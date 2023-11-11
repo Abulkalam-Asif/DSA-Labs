@@ -338,6 +338,71 @@ public:
       throw runtime_error("Exception! List is empty!");
     }
   }
+
+  void sort() { // O(n^3)
+    if (nodesCount == 0) {
+      throw runtime_error("Exception! List is empty!");
+    } else if (nodesCount > 1) {
+      Node<T> *target = nullptr;
+      int i = 0;
+      while (target != tail) {
+        target = getNode(i);
+        Node<T> *temp = target;
+        Node<T> *currSmallest = temp;
+        while (temp) { // Finding the smallest element
+          if (temp->data < currSmallest->data) {
+            currSmallest = temp;
+          }
+          temp = temp->next;
+        }
+        if (currSmallest != target) { // If the smallest is not already at its destination
+          // Removing
+          if (tail == currSmallest) { // When removing from the tail
+            currSmallest->prev->next = nullptr;
+            tail = currSmallest->prev;
+          } else { // When removing from the middle
+            currSmallest->next->prev = currSmallest->prev;
+            currSmallest->prev->next = currSmallest->next;
+          }
+          // Bringing
+          if (target == head) { // When bringing at the head
+            currSmallest->next = head;
+            currSmallest->prev = nullptr;
+            head->prev = currSmallest;
+            head = currSmallest;
+          } else { // When bringing at any target position
+            Node<T> *prevSmallest = target->prev;
+            currSmallest->next = prevSmallest->next;
+            prevSmallest->next->prev = currSmallest;
+            prevSmallest->next = currSmallest;
+            currSmallest->prev = prevSmallest;
+          }
+        }
+        ++i;
+      }
+    }
+  }
+
+  void reverse() {
+    if (nodesCount == 0) {
+      throw runtime_error("Exception! List is empty!");
+    } else if (nodesCount > 1) {
+      Node<T> *temp = tail;
+      tail = head;
+      head = temp;
+      while (temp != tail) {
+        Node<T> *temp2 = temp->prev;
+        temp->prev = temp->next;
+        temp->next = temp2;
+
+        temp = temp->next;
+      }
+      // After reaching at the tail, exchanging the pointer of tail
+      Node<T> *temp2 = temp->prev;
+      temp->prev = temp->next;
+      temp->next = temp2;
+    }
+  }
 };
 
 int main() {
@@ -356,12 +421,14 @@ int main() {
   cout << "11- Delete before" << endl;
   cout << "12- Get length" << endl;
   cout << "13- Search" << endl;
-  cout << "14- Exit" << endl;
+  cout << "14- Sort" << endl;
+  cout << "15- Reverse" << endl;
+  cout << "16- Exit" << endl;
   cout << "\nYour choice: ";
   int choice;
   cin >> choice;
   cout << "-----\n";
-  while (choice != 14) {
+  while (choice != 16) {
     if (choice == 1) {
       int element;
       cout << "Enter an element to insert at head: ";
@@ -466,9 +533,27 @@ int main() {
       } catch (exception &e) {
         cout << e.what();
       }
+    } else if (choice == 14) {
+      try {
+        myList.sort();
+        cout << "List sorted successfully!";
+      } catch (exception &e) {
+        cout << e.what();
+      }
+    } else if (choice == 15) {
+      try {
+        myList.reverse();
+        cout << "List reversed successfully!";
+      } catch (exception &e) {
+        cout << e.what();
+      }
     } else {
       cout << "Invalid choice! Try again.";
     }
+
+    // UNDO
+    cout << "\nList: ";
+    myList.printList();
 
     cout << "\n\n>---------------<\n";
     cout << "1- Insert at head" << endl;
@@ -484,7 +569,9 @@ int main() {
     cout << "11- Delete before" << endl;
     cout << "12- Get length" << endl;
     cout << "13- Search" << endl;
-    cout << "14- Exit" << endl;
+    cout << "14- Sort" << endl;
+    cout << "15- Reverse" << endl;
+    cout << "16- Exit" << endl;
     cout << "\nYour choice: ";
     cin >> choice;
     cout << "-----\n";
