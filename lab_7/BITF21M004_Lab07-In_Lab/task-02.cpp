@@ -339,7 +339,7 @@ public:
     }
   }
 
-  void sort() { // O(n^3)
+  void sort() { // O(n^2)
     if (nodesCount == 0) {
       throw runtime_error("Exception! List is empty!");
     } else if (nodesCount > 1) {
